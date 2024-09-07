@@ -121,10 +121,10 @@ export default function Home() {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold text-center text-green-800 mb-8">Hike Aware</h1>
+        <>
+            <h1 className="text-3xl font-bold text-center text-green-800">Hike Aware</h1>
 
-            <div className="bg-white p-4 rounded-lg shadow mb-4">
+            <div className="bg-white p-4 rounded-lg shadow">
                 <h2 className="text-lg font-semibold mb-2 flex items-center">
                     <MapPin className="mr-2" /> Select Location
                 </h2>
@@ -141,7 +141,7 @@ export default function Home() {
                 </select>
             </div>
 
-            <div ref={mapRef} className="w-full aspect-video rounded-lg shadow-lg mb-4"/>
+            <div ref={mapRef} className="w-full aspect-video rounded-lg shadow-lg"/>
 
             <div className="bg-white p-4 rounded-lg shadow mb-4">
                 <h2 className="text-lg font-semibold mb-2 flex items-center">
@@ -163,7 +163,7 @@ export default function Home() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-2 gap-4">
                 <Link href="/flora-and-fauna"
                       className="p-4 bg-blue-100 rounded-lg shadow hover:bg-blue-200 flex items-center justify-center">
                     <Leaf className="mr-2"/> Flora & Fauna
@@ -200,6 +200,6 @@ export default function Home() {
                     ))}
                 </div>
             </div>
-        </div>
+        </>
     );
 }
