@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
-import { MapPin, Thermometer, Cloud, Clock, Camera, Leaf, AlertTriangle } from 'lucide-react';
+import { MapPin, Thermometer, Cloud, Clock, Camera, Leaf, AlertTriangle, Newspaper } from 'lucide-react';
 import Link from "next/link"
 
 interface Location {
@@ -40,6 +40,30 @@ const locations: Location[] = [
             condition: 'Partly Cloudy'
         }
     },
+];
+
+interface NewsItem {
+    title: string;
+    summary: string;
+    date: string;
+}
+
+const news: NewsItem[] = [
+    {
+        title: "New Koala Conservation Efforts Launched",
+        summary: "Sunshine Coast Council announces a new initiative to protect and expand koala habitats in the region.",
+        date: "2024-09-05"
+    },
+    {
+        title: "Rare Bird Species Spotted in Glasshouse Mountains",
+        summary: "Birdwatchers excitement as the endangered Black-breasted Button-quail is sighted in the national park.",
+        date: "2024-09-03"
+    },
+    {
+        title: "Local Community Leads Beach Clean-up Drive",
+        summary: "Volunteers remove over 500kg of plastic waste from Mooloolaba Beach in a weekend-long environmental event.",
+        date: "2024-09-01"
+    }
 ];
 
 export default function Home() {
@@ -97,10 +121,10 @@ export default function Home() {
     };
 
     return (
-        <>
-            <h1 className="text-3xl font-bold text-center text-green-800">Hike Aware</h1>
+        <div className="container mx-auto px-4 py-8">
+            <h1 className="text-3xl font-bold text-center text-green-800 mb-8">Hike Aware</h1>
 
-            <div className="bg-white p-4 rounded-lg shadow">
+            <div className="bg-white p-4 rounded-lg shadow mb-4">
                 <h2 className="text-lg font-semibold mb-2 flex items-center">
                     <MapPin className="mr-2" /> Select Location
                 </h2>
@@ -117,9 +141,9 @@ export default function Home() {
                 </select>
             </div>
 
-            <div ref={mapRef} className="w-full aspect-square rounded-lg shadow-lg"/>
+            <div ref={mapRef} className="w-full aspect-video rounded-lg shadow-lg mb-4"/>
 
-            <div className="bg-white p-4 rounded-lg shadow">
+            <div className="bg-white p-4 rounded-lg shadow mb-4">
                 <h2 className="text-lg font-semibold mb-2 flex items-center">
                     <Cloud className="mr-2"/> Current Conditions
                 </h2>
@@ -139,7 +163,7 @@ export default function Home() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 mb-4">
                 <Link href="/flora-and-fauna"
                       className="p-4 bg-blue-100 rounded-lg shadow hover:bg-blue-200 flex items-center justify-center">
                     <Leaf className="mr-2"/> Flora & Fauna
@@ -154,13 +178,28 @@ export default function Home() {
                 </Link>
             </div>
 
-            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg shadow" role="alert">
+            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg shadow mb-4" role="alert">
                 <div className="flex items-center">
                     <AlertTriangle className="mr-2" />
                     <p className="font-bold">Alert</p>
                 </div>
                 <p>High fire danger today. Please be cautious and follow all safety guidelines.</p>
             </div>
-        </>
+
+            <div className="bg-white p-4 rounded-lg shadow">
+                <h2 className="text-lg font-semibold mb-4 flex items-center">
+                    <Newspaper className="mr-2"/> Local Environmental News
+                </h2>
+                <div className="space-y-4">
+                    {news.map((item, index) => (
+                        <div key={index} className="border-b border-gray-200 pb-4 last:border-b-0 last:pb-0">
+                            <h3 className="font-semibold text-lg">{item.title}</h3>
+                            <p className="text-gray-600 mb-1">{item.summary}</p>
+                            <p className="text-sm text-gray-500">{item.date}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
     );
 }
