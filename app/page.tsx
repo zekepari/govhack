@@ -97,8 +97,8 @@ export default function Home() {
     };
 
     return (
-        <div className="min-h-screen space-y-4">
-            <h1 className="text-3xl font-bold text-center text-green-800">Nature Reserve App</h1>
+        <>
+            <h1 className="text-3xl font-bold text-center text-green-800">Hike Aware</h1>
 
             <div className="bg-white p-4 rounded-lg shadow">
                 <h2 className="text-lg font-semibold mb-2 flex items-center">
@@ -140,21 +140,18 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-                <button
-                    className="p-4 bg-blue-100 rounded-lg shadow hover:bg-blue-200 flex items-center justify-center">
+                <Link href="/flora-and-fauna"
+                      className="p-4 bg-blue-100 rounded-lg shadow hover:bg-blue-200 flex items-center justify-center">
                     <Leaf className="mr-2"/> Flora & Fauna
-                </button>
-                <button
-                    className="p-4 bg-yellow-100 rounded-lg shadow hover:bg-yellow-200 flex items-center justify-center">
-                    <Bird className="mr-2"/> Wildlife Sightings
-                </button>
+                </Link>
+                <Link href="/alerts"
+                      className="p-4 bg-orange-100 rounded-lg shadow hover:bg-orange-200 flex items-center justify-center">
+                    <AlertTriangle className="mr-2" /> View Alerts
+                </Link>
                 <Link href="/camera"
-                    className="p-4 bg-purple-100 rounded-lg shadow hover:bg-purple-200 flex items-center justify-center">
+                      className="p-4 col-span-full bg-purple-100 rounded-lg shadow hover:bg-purple-200 flex items-center justify-center">
                     <Camera className="mr-2" /> Take Photo
                 </Link>
-                <button className="p-4 bg-green-100 rounded-lg shadow hover:bg-green-200 flex items-center justify-center">
-                    Community Events
-                </button>
             </div>
 
             <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg shadow" role="alert">
@@ -164,6 +161,6 @@ export default function Home() {
                 </div>
                 <p>High fire danger today. Please be cautious and follow all safety guidelines.</p>
             </div>
-        </div>
+        </>
     );
 }
