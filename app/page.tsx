@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
-import { MapPin, Thermometer, Cloud, Clock, Camera, Leaf, Bird, AlertTriangle } from 'lucide-react';
+import { MapPin, Thermometer, Cloud, Clock, Camera, Leaf, AlertTriangle } from 'lucide-react';
 import Link from "next/link"
 
 interface Location {
