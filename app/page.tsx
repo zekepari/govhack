@@ -1,101 +1,169 @@
-import Image from "next/image";
+"use client";
+
+import React, { useState, useEffect, useRef } from 'react';
+import { Loader } from '@googlemaps/js-api-loader';
+import { MapPin, Thermometer, Cloud, Clock, Camera, Leaf, Bird, AlertTriangle } from 'lucide-react';
+import Link from "next/link"
+
+interface Location {
+    name: string;
+    coordinates: {
+        lat: number;
+        lng: number;
+    };
+    weather: {
+        temp: number;
+        condition: string;
+    };
+}
+
+const locations: Location[] = [
+    {
+        name: "Mary Cairncross Park",
+        coordinates: {
+            lat: -26.7811,
+            lng: 152.8816
+        },
+        weather: {
+            temp: 25,
+            condition: 'Sunny'
+        }
+    },
+    {
+        name: "Sugar Bag Road",
+        coordinates: {
+            lat: -26.7864,
+            lng: 153.1132
+        },
+        weather: {
+            temp: 23,
+            condition: 'Partly Cloudy'
+        }
+    },
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    const mapRef = useRef<HTMLDivElement>(null);
+    const [map, setMap] = useState<google.maps.Map | null>(null);
+    const [selectedLocation, setSelectedLocation] = useState<Location>(locations[0]);
+    const [currentTime, setCurrentTime] = useState('');
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    useEffect(() => {
+        const loader = new Loader({
+            apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
+            version: 'weekly',
+        });
+
+        loader.load().then(() => {
+            if (!mapRef.current) return;
+
+            const mapOptions: google.maps.MapOptions = {
+                center: { lat: selectedLocation.coordinates.lat, lng: selectedLocation.coordinates.lng },
+                zoom: 16,
+            };
+
+            const newMap = new google.maps.Map(mapRef.current, mapOptions);
+            setMap(newMap);
+        });
+
+        // Update time every minute
+        const updateTime = () => {
+            const now = new Date().toLocaleString("en-AU", {
+                timeZone: "Australia/Brisbane",
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+            setCurrentTime(now);
+        };
+
+        updateTime(); // Initial time set
+        const timer = setInterval(updateTime, 60000);
+
+        return () => clearInterval(timer);
+    }, []);
+
+    useEffect(() => {
+        if (map) {
+            map.setCenter(selectedLocation.coordinates);
+        }
+    }, [selectedLocation, map]);
+
+    const handleLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const newLocation = locations.find(loc => loc.name === e.target.value);
+        if (newLocation) {
+            setSelectedLocation(newLocation);
+        }
+    };
+
+    return (
+        <div className="min-h-screen space-y-4">
+            <h1 className="text-3xl font-bold text-center text-green-800">Nature Reserve App</h1>
+
+            <div className="bg-white p-4 rounded-lg shadow">
+                <h2 className="text-lg font-semibold mb-2 flex items-center">
+                    <MapPin className="mr-2" /> Select Location
+                </h2>
+                <select
+                    value={selectedLocation.name}
+                    onChange={handleLocationChange}
+                    className="w-full p-2 bg-white border border-gray-300 rounded-md"
+                >
+                    {locations.map((location) => (
+                        <option key={location.name} value={location.name}>
+                            {location.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
+            <div ref={mapRef} className="w-full aspect-square rounded-lg shadow-lg"/>
+
+            <div className="bg-white p-4 rounded-lg shadow">
+                <h2 className="text-lg font-semibold mb-2 flex items-center">
+                    <Cloud className="mr-2"/> Current Conditions
+                </h2>
+                <div className="flex justify-between">
+                    <div className="flex items-center">
+                        <Thermometer className="mr-2"/>
+                        {selectedLocation.weather.temp}°C
+                    </div>
+                    <div className="flex items-center">
+                        <Cloud className="mr-2"/>
+                        {selectedLocation.weather.condition}
+                    </div>
+                    <div className="flex items-center">
+                        <Clock className="mr-2"/>
+                        {currentTime}
+                    </div>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+                <button
+                    className="p-4 bg-blue-100 rounded-lg shadow hover:bg-blue-200 flex items-center justify-center">
+                    <Leaf className="mr-2"/> Flora & Fauna
+                </button>
+                <button
+                    className="p-4 bg-yellow-100 rounded-lg shadow hover:bg-yellow-200 flex items-center justify-center">
+                    <Bird className="mr-2"/> Wildlife Sightings
+                </button>
+                <Link href="/camera"
+                    className="p-4 bg-purple-100 rounded-lg shadow hover:bg-purple-200 flex items-center justify-center">
+                    <Camera className="mr-2" /> Take Photo
+                </Link>
+                <button className="p-4 bg-green-100 rounded-lg shadow hover:bg-green-200 flex items-center justify-center">
+                    Community Events
+                </button>
+            </div>
+
+            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg shadow" role="alert">
+                <div className="flex items-center">
+                    <AlertTriangle className="mr-2" />
+                    <p className="font-bold">Alert</p>
+                </div>
+                <p>High fire danger today. Please be cautious and follow all safety guidelines.</p>
+            </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+    );
 }
