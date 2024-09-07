@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -62,7 +62,6 @@ const alerts: Alert[] = [
 
 export default function AlertsPage() {
     const mapRef = useRef<HTMLDivElement>(null);
-    const [map, setMap] = useState<google.maps.Map | null>(null);
 
     useEffect(() => {
         const loader = new Loader({
@@ -73,23 +72,19 @@ export default function AlertsPage() {
         loader.load().then(() => {
             if (!mapRef.current) return;
 
-            const newMap = new google.maps.Map(mapRef.current, {
+            const map = new google.maps.Map(mapRef.current, {
                 center: { lat: -26.65, lng: 153.066 }, // Centered on Sunshine Coast
                 zoom: 10,
             });
 
-            setMap(newMap);
-
-            // Add markers for each alert
             alerts.forEach(alert => {
                 const marker = new google.maps.Marker({
                     position: alert.coordinates,
-                    map: newMap,
+                    map: map,
                     title: alert.title,
                     icon: {
                         path: google.maps.SymbolPath.CIRCLE,
-                        fillColor: alert.severity === 'high' ? '#FF0000' :
-                            alert.severity === 'medium' ? '#FFA500' : '#FFFF00',
+                        fillColor: getSeverityColor(alert.severity),
                         fillOpacity: 1,
                         strokeWeight: 0,
                         scale: 8
@@ -101,7 +96,7 @@ export default function AlertsPage() {
                 });
 
                 marker.addListener('click', () => {
-                    infoWindow.open(newMap, marker);
+                    infoWindow.open(map, marker);
                 });
             });
         });
@@ -109,36 +104,36 @@ export default function AlertsPage() {
 
     const getSeverityColor = (severity: Alert['severity']) => {
         switch (severity) {
-            case 'high': return 'bg-red-500';
-            case 'medium': return 'bg-orange-500';
-            case 'low': return 'bg-yellow-500';
-            default: return 'bg-gray-500';
+            case 'high': return '#FF0000';
+            case 'medium': return '#FFA500';
+            case 'low': return '#FFFF00';
+            default: return '#808080';
         }
     };
 
     return (
         <>
-            <Link href="/" className="flex items-center text-green-700 hover:text-green-900">
+            <Link href="/" className="flex items-center text-green-700 hover:text-green-900 mb-4">
                 <ArrowLeft className="mr-2" /> Back to Home
             </Link>
 
-            <h1 className="text-3xl font-bold text-center text-green-800">Sunshine Coast Alerts</h1>
+            <h1 className="text-3xl font-bold text-center text-green-800 mb-8">Sunshine Coast Alerts</h1>
 
-            <div ref={mapRef} className="w-full aspect-square rounded-lg shadow-lg"/>
+            <div ref={mapRef} className="w-full aspect-square rounded-lg shadow-lg mb-8"/>
 
-            <div className="bg-white p-4 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-semibold mb-4">Current Alerts</h2>
-                <div className="space-y-4">
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+                <h2 className="text-2xl font-semibold mb-6">Current Alerts</h2>
+                <div className="space-y-6">
                     {alerts.map(alert => (
-                        <div key={alert.id} className="border-l-4 border-yellow-500 pl-4 py-2">
-                            <div className="flex items-center justify-between">
-                                <h3 className="text-lg font-semibold">{alert.title}</h3>
-                                <span className={`px-2 py-1 rounded-full text-white text-sm ${getSeverityColor(alert.severity)}`}>
+                        <div key={alert.id} className="border-l-4 border-yellow-500 pl-4 py-3">
+                            <div className="flex items-center justify-between mb-2">
+                                <h3 className="text-xl font-semibold">{alert.title}</h3>
+                                <span className={`px-3 py-1 rounded-full text-white text-sm ${getSeverityColorClass(alert.severity)}`}>
                                     {alert.severity.charAt(0).toUpperCase() + alert.severity.slice(1)}
                                 </span>
                             </div>
-                            <p className="text-gray-600">{alert.description}</p>
-                            <p className="text-sm text-gray-500 mt-1">
+                            <p className="text-gray-700 mb-2">{alert.description}</p>
+                            <p className="text-sm text-gray-500">
                                 Type: {alert.type.charAt(0).toUpperCase() + alert.type.slice(1)}
                             </p>
                         </div>
@@ -147,4 +142,13 @@ export default function AlertsPage() {
             </div>
         </>
     );
+}
+
+function getSeverityColorClass(severity: Alert['severity']) {
+    switch (severity) {
+        case 'high': return 'bg-red-500';
+        case 'medium': return 'bg-orange-500';
+        case 'low': return 'bg-yellow-500';
+        default: return 'bg-gray-500';
+    }
 }
