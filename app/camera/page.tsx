@@ -38,14 +38,14 @@ export default function CameraPage() {
     };
 
     return (
-        <div className="min-h-screen bg-green-50 p-4 space-y-4">
+        <>
             <Link href="/" className="flex items-center text-green-700 hover:text-green-900">
                 <ArrowLeft className="mr-2" /> Back to Home
             </Link>
 
             <h1 className="text-3xl font-bold text-center text-green-800">Wildlife Camera</h1>
 
-            <div className="bg-white p-4 rounded-lg shadow-lg max-w-md mx-auto">
+            <div className="bg-white p-4 rounded-lg shadow-lg">
                 {!capturedImage && (
                     <>
                         <button
@@ -86,7 +86,7 @@ export default function CameraPage() {
                 )}
             </div>
 
-            <div className="bg-white p-4 rounded-lg shadow-lg max-w-md mx-auto mt-4">
+            <div className="bg-white p-4 rounded-lg shadow-lg">
                 <h2 className="text-xl font-semibold mb-2">Recent Sightings</h2>
                 <ul className="space-y-2">
                     <li className="flex items-center justify-between">
@@ -103,6 +103,6 @@ export default function CameraPage() {
                     </li>
                 </ul>
             </div>
-        </div>
+        </>
     );
 }
