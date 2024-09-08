@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GovHack 2024 - HikeAware
 
-## Getting Started
+## The Product
+Our project had a two-pronged approach: to both aid in citizen science and local animal awareness from an app, and to help provide greater data awareness and analysis capabilities to the local council.To do so, we have created two outputs: the app [HikeAware](https://hikeaware.vercel.app/), and an associated backend data dashboard, accessible directly through the app, or via its own address. 
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technical Specifications
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Dashboard
+The HikeAware dashboard was created using the Python Plotly Dash library. It is hosted on an ARDC Nectar cloud virtual machine. It can be accessed [here](http://203.101.226.242:8050/).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## The Challenge
+We have entered into the challenge [Smart infrastructure for data-driven decision making](https://hackerspace.govhack.org/challenges/smart_infrastructure_for_data_driven_decision_making).
 
-## Learn More
+We are utilising the following datasets:
++ Mary Cairncross Scenic Reserve Farmo PIR Counter
++ Mary Cairncross Scenic Reserve NCount WiFi Counter
++ Mary Cairncross Scenic Reserve Atmos Weather Station
++ Mary Cairncross Scenic Reserve Milesight Occupancy Counter
++ Sugar Bag Road Recreation Reserve Atmos Weather Station
++ Sugar Bag Road Recreation Reserve Farmo PIR Counter
 
-To learn more about Next.js, take a look at the following resources:
+We have also created some mock data for the app to utilise. This data is in the form of animal sighting counts per hour.
+Data was aggregated into two CSV files: ALLDATA.csv, and ALLDATA_sbr.csv. These are located in the code folder.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## The Team
+We are a team of four people: Lachlan McKinnie (PhD student, bioinformatics), Milan (3rd year engineering student), Jack Thorpe (3rd year engineering student), and Zeke xxx (3rd year IT student).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
