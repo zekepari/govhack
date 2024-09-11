@@ -15,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "SmartTrack",
-  description: "SmartTrack is an innovative web-based dashboard that transforms IoT sensor data into actionable insights for proactive urban management. Designed for the Sunshine Coast Council, it integrates real-time monitoring, predictive maintenance, and resource optimization for parks and recreational areas. SmartTrack empowers data-driven decision-making, enhancing visitor experiences while optimizing operational efficiency and environmental stewardship. From trail maintenance to budget allocation, SmartTrack paves the way for sustainable and responsive urban spaces.",
+  title: "HikeAware",
+  description: "HikeAware is an innovative web-based dashboard that transforms IoT sensor data into actionable insights for proactive urban management. Designed for the Sunshine Coast Council, it integrates real-time monitoring, predictive maintenance, and resource optimization for parks and recreational areas. SmartTrack empowers data-driven decision-making, enhancing visitor experiences while optimizing operational efficiency and environmental stewardship. From trail maintenance to budget allocation, SmartTrack paves the way for sustainable and responsive urban spaces.",
 };
 
 export default function RootLayout({

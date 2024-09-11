@@ -122,7 +122,7 @@ export default function Home() {
 
     return (
         <>
-            <h1 className="text-3xl font-bold text-center text-green-800">Hike Aware</h1>
+            <h1 className="text-3xl font-bold text-center text-green-800">HikeAware</h1>
 
             <div className="bg-white p-4 rounded-lg shadow">
                 <h2 className="text-lg font-semibold mb-2 flex items-center">
