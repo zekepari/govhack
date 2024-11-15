@@ -28,7 +28,3 @@ We are utilising the following datasets:
 We have also created some mock data for the app to utilise. This data is in the form of animal sighting counts per hour.
 Data was aggregated into two CSV files: ALLDATA.csv, and ALLDATA_sbr.csv. These are located in the code folder.
 
-## The Team
-We are a team of four people: Lachlan McKinnie (PhD student, bioinformatics), Milan Malla (3rd year engineering student), Jack Thorpe (3rd year engineering student), and Zeke Pari (1st year Comp sci. student).
-
-
